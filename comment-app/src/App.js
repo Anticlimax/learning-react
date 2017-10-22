@@ -12,9 +12,9 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this._loadComments()    
+    this._loadComments()
   }
-  
+
   _loadComments() {
     let comments = localStorage.getItem('comments')
     if (comments) {
@@ -39,11 +39,21 @@ class App extends Component {
     this.setState({comments})
     this._saveComments(comments)
   }
+
+  handleDeleteComment = i => {
+    const comments = this.state.comments
+    comments.splice(i, 1)
+    this.setState({comments})
+    this._saveComments(comments)
+  }
+
   render() {
     return (
       <div className="Wrapper">
         <CommentInput onSubmit={this.handleSubmitComment}></CommentInput>
-        <CommentList comments={this.state.comments}></CommentList>
+        <CommentList
+          comments={this.state.comments}
+          onDeleteComment={this.handleDeleteComment}></CommentList>
       </div>
     );
   }

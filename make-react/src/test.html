@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class EventEmitter {
+      constructor() {
+        this.queue = []
+      }
+
+      on(name, callback) {
+        const item = {
+          type: name,
+          callback
+        }
+        this.queue.push(item)
+      }
+
+      emit(name, ...data) {
+        this.queue.forEach(e => {
+          if (e.type === name) {
+            e.callback(...data)
+          }
+        })
+      }
+
+      off(name, callback) {
+        this.queue.forEach((e, i) => {
+          if (e.type === name && e.callback === callback) {
+            this.queue.splice(i, 1)
+          }
+        })
+      }
+    }
+
+    const emitter = new EventEmitter()
+    const sayHi = (name) => console.log(`hello ${name}`)
+    const sayHi2 = (name) => console.log(`good night, ${name}`)
+
+    emitter.on(`hi`, sayHi)
+    emitter.on('hi', sayHi2)
+    emitter.emit('hi', 'liyang')
+
+    emitter.off('hi', sayHi)
+    emitter.emit('hi', 'liyang')
+  </script>
+</body>
+
+</html>
